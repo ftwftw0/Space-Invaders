@@ -1,0 +1,57 @@
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Enemy.class.hpp                                    :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: flagoutt <marvin@42.fr>                    +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/06/19 16:01:14 by flagoutt          #+#    #+#             //
+//   Updated: 2015/06/20 22:15:22 by flagoutt         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
+
+#include <iostream>
+
+#ifndef ENEMY_HPP
+#define ENEMY_HPP
+
+class Enemy
+{
+protected:
+	std::string			type;
+	
+	int					hp;
+	int					maxhp;
+	int					dmg;
+	static std::string	quotes[];
+	inline Enemy(void) {std::cout << "Dont use me";};
+
+public:
+ 	std::string		getType(void) const;
+	int				getHp(void) const;
+	int				getMaxHp(void) const;
+	int				getPosX(void) const;
+	int				getPosY(void) const;
+	int				getDmg(void) const;
+
+    void			moveUp(void);
+    void			moveDown(t_point winsize);
+    void			moveLeft(void);
+    void			moveRight(t_point winsize);
+	virtual void	attack(std::string const &target) const;
+	virtual int		takeDamage(int amount);
+	void			run(void) const;
+	void			announce(std::string speech) const;
+	void			introduce(void) const;
+	void			saysth(void) const;
+
+	Enemy &operator=(Enemy const &copy);
+
+	Enemy(int hp, std::string type);
+	Enemy(Enemy const &a);
+	Enemy(Enemy const &a, std::string type);
+	virtual ~Enemy(void);
+};
+
+std::ostream &operator<<(std::ostream &os, const Enemy &a);
+#endif

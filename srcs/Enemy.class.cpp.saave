@@ -1,0 +1,235 @@
+// ************************************************************************** //
+//                                                                            //
+//                                                        :::      ::::::::   //
+//   Enemy.class.cpp                                    :+:      :+:    :+:   //
+//                                                    +:+ +:+         +:+     //
+//   By: flagoutt <marvin@42.fr>                    +#+  +:+       +#+        //
+//                                                +#+#+#+#+#+   +#+           //
+//   Created: 2015/06/19 16:00:24 by flagoutt          #+#    #+#             //
+//   Updated: 2015/06/20 22:13:49 by flagoutt         ###   ########.fr       //
+//                                                                            //
+// ************************************************************************** //
+
+#include "Enemy.class.hpp"
+
+std::string Enemy::quotes[] =
+{
+	" stood on his toes, screamed \"SURPRISE ATTAAAACK\", and stole a soft kiss from ",
+	" throws a boomerang like a boss, waits few seconds, and take it in his face. Shocked, he hardly looks at ",
+	" gets an incredible punch in its kind of face from ",
+	" is pushing up the daisies thanks to ",
+	" takes a moment to think : \"BURN ALL THE BABIIIIEEES\"... but has been shot by ",
+	"This time it'll be awesome, I promise!",
+	"Hey everybody, check out my package!",
+	"Defragmenting!",
+	"Recompiling my combat code!",
+	"Running the sequencer!",
+	"It's happening... it's happening!",
+	"It's about to get magical!",
+	"What will he do next?",
+	"Things are about to get awesome!",
+	"Let's get this party started!",
+	"Glitchy weirdness is term of endearment, right?",
+	"I'm a sexy dinosaur! Rawr.",
+	"Oh god I can't stop!",
+	"It's the only way to stop the voices!",
+	"I am cloaking...",
+	"Roses are red/Violets are blue/Wait...how many syllables does that have?",
+	"Mini-trap, pretend you're a Siren!",
+	"Aww, I shoulda drawn tattoos on it!",
+	"Burn them, my mini-phoenix!",
+	"Calm down!",
+	"It's time to phase you suckers out!",
+	"Tell me I'm the prettiest!", 
+	"To the sky, mini-trap!", 
+	"Fly mini-trap! Fly!", 
+	"I have two robot arms!", 
+	"Punch 'em in the face, mini-trap!", 
+	"Ratattattattatta! Powpowpowpow! Powpowpowpow! Pew-pew-pew!", 
+	"Score one for the turret-trap!", 
+	"I'm going commando!", 
+	"Boiyoiyoiyoiyoing!",
+	"For you...I commit...seppuku...", 
+	"Some days, you just can't get rid of an obscure pop-culture reference.", 
+	"Can I use my magic missile",
+	"Do not look behind my curtain!",
+	"I'm made of magic!", 
+	"You can call me Gundalf!", 
+	"Kill! Reload! Kill! Reload! KILL! RELOAD!", 
+	"Like those guys who made only one song ever.", 
+	"All these bullets in just one shot.", 
+	"One shot, make it count!", 
+	"Boogie time!",
+	"Lasers!",
+	"Psychedellic man!",
+	"Everybody, dance time! Da-da-da-dun-daaa-da-da-da-dun-daaa!",
+	"One for you, one for you, and one for you!",
+	"Avast ye scurvy dogs!",
+	"Is this really canon?",
+	"I feel a joke about poop decks coming on!"
+};
+
+/*
+** Accessors
+*/
+std::string Enemy::getType(void) const
+{
+	return (this->type);
+}
+
+int Enemy::getPosX(void) const
+{
+    return (this->pos.x);
+}
+
+int Enemy::getPosY(void) const
+{
+    return (this->pos.y);
+}
+
+int			Enemy::getHp(void) const
+{
+	return (this->hp);
+}
+
+int			Enemy::getMaxHp(void) const
+{
+	return (this->maxhp);
+}
+
+int			Enemy::getDmg(void) const
+{
+	return (this->dmg);
+}
+
+/*
+** Methods
+*/
+void Enemy::moveUp(void)
+{
+    if (this->pos.y > 0)
+        this->pos.y--;
+}
+
+void Enemy::moveDown(t_point winsize)
+{
+    if (this->pos.y < winsize.y - 1)
+        this->pos.y++;
+}
+
+void Enemy::moveLeft(void)
+{
+    if (this->pos.x > 0)
+        this->pos.x--;
+}
+
+void Enemy::moveRight(t_point winsize)
+{
+    if (this->pos.x < winsize.x - 4)
+        this->pos.x++;
+}
+
+void Enemy::saysth(void) const
+{
+	std::cout << "\033[36m" << this->type << "\033[0m"<< " : "
+			  << Enemy::quotes[5 + rand() % 48] << std::endl;
+}
+
+void Enemy::attack(std::string const &target) const
+{
+	std::cout << this->type << " attacks " << target
+			  << "." << std::endl;
+}
+
+int Enemy::takeDamage(int amount)
+{
+	if (this->hp > 0)
+	{
+		if (this->hp > amount)
+			this->hp -= amount;
+		else
+			this->hp = 0;
+		std::cout << this->type << " takes " << amount << "damage. (" << this->hp
+				  << "HP left)" << std::endl;
+		if (this->hp == 0)
+			std::cout << this->type << " just died." << std::endl;
+	}
+	else
+		std::cout << this->type << " is dead. He can't take any damage anymore. But you can have sex with him, if you want." << std::endl;
+	return (amount);
+}
+
+void Enemy::run(void) const
+{
+	std::cout << this->type << " is running... But after what ?" << std::endl;
+}
+
+void Enemy::introduce(void) const
+{
+	std::cout << "I am a " << this->type
+			  << ", i'm here to kill you !" << std::endl;
+}
+
+void Enemy::announce(std::string speech) const
+{
+	std::cout << "\033[36m" << this->type << "\033[0m" 
+			  << " : " << speech << std::endl;
+}
+
+/*
+** Operators
+*/
+Enemy &Enemy::operator=(Enemy const &copy)
+{
+	this->type = copy.getType();
+	this->hp = copy.getHp();
+	this->maxhp = copy.getMaxHp();
+	this->dmg = copy.getDmg();
+	return (*this);
+}
+
+std::ostream &operator<<(std::ostream &os, const Enemy &a)
+{
+	os << "I am a " << a.getType() << '.' << std::endl;
+	return (os);
+}
+
+/*
+** Constructeurs / Destructeurs
+*/
+Enemy::Enemy(int hp, std::string type) : type(type), hp(hp), maxhp(hp)
+{
+	srand((long)time(0));
+	this->dmg = 20;
+	std::cout << "\033[32m" << "An enemy called "
+			  << this->type << " just popped !\033[0m" << std::endl;
+}
+
+Enemy::Enemy(Enemy const &a)
+{
+	srand((long)time(0));
+	this->hp = a.getHp();
+	this->type = a.getType();
+	this->maxhp = a.getMaxHp();
+	this->dmg = a.getDmg();
+	std::cout << "\033[32m" << "An enemy called "
+			  << this->type << " just popped !\033[0m" << std::endl;
+}
+
+Enemy::Enemy(Enemy const &a, std::string type) : type(type)
+{
+	srand((long)time(0));
+	this->hp = a.getHp();
+	this->maxhp = a.getMaxHp();
+	this->dmg = a.getDmg();
+	std::cout << "\033[32m" << "An enemy called "
+			  << this->type << " just popped !\033[0m" << std::endl;
+}
+
+Enemy::~Enemy(void)
+{
+	if (this->hp > 0)
+		std::cout << "\033[31m" << "Enemy " << this->type
+				  << " just died!\033[0m"
+				  << std::endl;
+}
